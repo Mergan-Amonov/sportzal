@@ -1,0 +1,53 @@
+{% extends 'members/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+
+{% block topbar_actions %}
+<a href="{% url 'member_list' %}" class="btn-fc btn-fc-ghost">
+    <i class="bi bi-arrow-left"></i> Orqaga
+</a>
+{% endblock %}
+
+{% block content %}
+<div style="max-width:520px">
+    <div class="fc-card">
+        <div style="padding:24px">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-field">
+                    <label class="form-label-fc">{{ field.label }}</label>
+                    {% if field.field.widget.input_type == 'select' %}
+                        <select name="{{ field.html_name }}"
+                                style="width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text);
+                                       font-family:'Geist',sans-serif; font-size:13px; padding:9px 12px;
+                                       border-radius:6px; outline:none; cursor:pointer"
+                                onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+                            {% for choice in field.field.choices %}
+                            <option value="{{ choice.0 }}" {% if field.value == choice.0|stringformat:"s" %}selected{% endif %}
+                                    style="background:var(--surface)">{{ choice.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    {% elif field.field.widget.input_type == 'file' %}
+                        <input type="file" name="{{ field.html_name }}"
+                               style="width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text);
+                                      font-family:'Geist',sans-serif; font-size:13px; padding:9px 12px; border-radius:6px; cursor:pointer">
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
+                    {% if field.errors %}
+                        <div style="color:var(--error); font-size:11px; margin-top:4px">{{ field.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <div style="display:flex; gap:10px; margin-top:20px; padding-top:16px; border-top:1px solid var(--border)">
+                    <button type="submit" class="btn-fc btn-fc-primary">
+                        <i class="bi bi-check-lg"></i> Saqlash
+                    </button>
+                    <a href="{% url 'member_list' %}" class="btn-fc btn-fc-ghost">Bekor qilish</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

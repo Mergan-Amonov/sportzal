@@ -1,0 +1,118 @@
+{% extends 'members/base.html' %}
+{% block title %}A'zolar{% endblock %}
+{% block page_title %}A'zolar ro'yxati{% endblock %}
+
+{% block content %}
+
+<!-- Search / Filter Bar -->
+<div class="fc-card mb-4" style="margin-bottom:16px; padding:12px 16px">
+    <form method="get" style="display:flex; gap:10px; align-items:center; flex-wrap:wrap">
+        <div style="position:relative; flex:1; min-width:180px">
+            <i class="bi bi-search" style="position:absolute; left:10px; top:50%; transform:translateY(-50%); color:var(--muted); font-size:12px; pointer-events:none"></i>
+            <input type="text" name="q" value="{{ q }}" placeholder="Ism yoki telefon..."
+                   style="width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text);
+                          font-family:'Geist',sans-serif; font-size:13px; padding:8px 12px 8px 32px;
+                          border-radius:6px; outline:none"
+                   onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <select name="status"
+                style="background:var(--bg); border:1px solid var(--border); color:var(--text);
+                       font-family:'Geist',sans-serif; font-size:13px; padding:8px 12px;
+                       border-radius:6px; outline:none; cursor:pointer">
+            <option value="">Barcha holat</option>
+            <option value="active" {% if status == 'active' %}selected{% endif %}>Faol</option>
+            <option value="inactive" {% if status == 'inactive' %}selected{% endif %}>Nofaol</option>
+        </select>
+        <button type="submit" class="btn-fc btn-fc-secondary">
+            <i class="bi bi-search"></i> Qidirish
+        </button>
+        {% if q or status %}
+        <a href="{% url 'member_list' %}" class="btn-fc btn-fc-ghost">
+            <i class="bi bi-x"></i> Tozalash
+        </a>
+        {% endif %}
+    </form>
+</div>
+
+<!-- Members Table -->
+<div class="fc-card">
+    <table class="fc-table">
+        <thead>
+            <tr>
+                <th style="width:40px">#</th>
+                <th>A'zo</th>
+                <th>Telefon</th>
+                <th>Abonement</th>
+                <th>Tugash sanasi</th>
+                <th>Holat</th>
+                <th style="width:80px"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in members %}
+            <tr>
+                <td class="td-mono">{{ forloop.counter }}</td>
+                <td>
+                    <div style="display:flex; align-items:center; gap:10px">
+                        <div class="avatar">
+                            {% if member.photo %}
+                                <img src="{{ member.photo.url }}" alt="">
+                            {% else %}
+                                {{ member.full_name|first|upper }}
+                            {% endif %}
+                        </div>
+                        <a href="{% url 'member_detail' member.pk %}" class="td-name" style="text-decoration:none">
+                            {{ member.full_name }}
+                        </a>
+                    </div>
+                </td>
+                <td class="td-mono">{{ member.phone }}</td>
+                <td class="td-muted">
+                    {% if member.active_subscription %}
+                        {{ member.active_subscription.plan.name }}
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+                <td class="td-mono">
+                    {% if member.active_subscription %}
+                        {{ member.active_subscription.end_date }}
+                    {% else %}—{% endif %}
+                </td>
+                <td>
+                    {% if member.is_active %}
+                        {% with d=member.active_subscription.days_left %}
+                            {% if d <= 3 %}
+                                <span class="badge-fc badge-warning">{{ d }} kun qoldi</span>
+                            {% else %}
+                                <span class="badge-fc badge-success">Faol</span>
+                            {% endif %}
+                        {% endwith %}
+                    {% else %}
+                        <span class="badge-fc badge-muted">Nofaol</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <div style="display:flex; gap:6px">
+                        <a href="{% url 'member_detail' member.pk %}" class="btn-fc btn-fc-ghost btn-fc-sm" title="Ko'rish">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <a href="{% url 'member_edit' member.pk %}" class="btn-fc btn-fc-ghost btn-fc-sm" title="Tahrirlash">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" style="text-align:center; color:var(--muted); padding:40px 16px">
+                    <i class="bi bi-people" style="font-size:28px; display:block; margin-bottom:8px; opacity:.4"></i>
+                    A'zolar topilmadi
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'members/base.html' %}
+{% block title %}O'chirish{% endblock %}
+{% block page_title %}Tasdiqlash{% endblock %}
+
+{% block topbar_actions %}
+<a href="javascript:history.back()" class="btn-fc btn-fc-ghost">
+    <i class="bi bi-arrow-left"></i> Orqaga
+</a>
+{% endblock %}
+
+{% block content %}
+<div style="max-width:440px">
+    <div class="fc-card" style="border-color:rgba(239,68,68,.25)">
+        <div style="padding:40px 32px; text-align:center">
+            <div style="width:56px; height:56px; background:rgba(239,68,68,.1); border:1px solid rgba(239,68,68,.2);
+                        border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px">
+                <i class="bi bi-exclamation-triangle" style="color:var(--error); font-size:22px"></i>
+            </div>
+            <div class="satoshi fw-semibold" style="font-size:16px; margin-bottom:8px">O'chirishni tasdiqlang</div>
+            <div class="text-sm text-muted" style="margin-bottom:6px">
+                <strong style="color:var(--text)">{{ object }}</strong>
+            </div>
+            <div class="text-sm text-muted" style="margin-bottom:28px">
+                {{ type }}ni o'chirasiz. Bu amalni qaytarib bo'lmaydi.
+            </div>
+            <form method="post" style="display:flex; gap:10px; justify-content:center">
+                {% csrf_token %}
+                <button type="submit" class="btn-fc btn-fc-danger-soft">
+                    <i class="bi bi-trash"></i> Ha, o'chirish
+                </button>
+                <a href="javascript:history.back()" class="btn-fc btn-fc-secondary">Bekor qilish</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

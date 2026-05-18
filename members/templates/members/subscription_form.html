@@ -1,0 +1,53 @@
+{% extends 'members/base.html' %}
+{% block title %}Abonement qo'shish{% endblock %}
+{% block page_title %}Abonement qo'shish{% endblock %}
+
+{% block topbar_actions %}
+<a href="{% url 'member_detail' member.pk %}" class="btn-fc btn-fc-ghost">
+    <i class="bi bi-arrow-left"></i> Orqaga
+</a>
+{% endblock %}
+
+{% block content %}
+<div style="max-width:480px">
+
+    <!-- Member indicator -->
+    <div class="fc-card mb-4" style="padding:10px 16px; margin-bottom:12px; display:flex; align-items:center; gap:10px">
+        <div class="avatar" style="font-size:12px">{{ member.full_name|first|upper }}</div>
+        <div>
+            <div class="fw-medium text-sm">{{ member.full_name }}</div>
+            <div class="text-xs text-muted mono">{{ member.phone }}</div>
+        </div>
+    </div>
+
+    <div class="fc-card">
+        <div style="padding:24px">
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-field">
+                    <label class="form-label-fc">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div style="color:var(--error); font-size:11px; margin-top:4px">{{ field.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <div style="background:rgba(59,130,246,.08); border:1px solid rgba(59,130,246,.2); border-radius:6px;
+                            padding:10px 14px; margin-bottom:16px; font-size:12px; color:#60a5fa; display:flex; align-items:center; gap:8px">
+                    <i class="bi bi-info-circle"></i>
+                    Tugash sanasi abonement turi muddatiga qarab avtomatik hisoblanadi.
+                </div>
+
+                <div style="display:flex; gap:10px; padding-top:16px; border-top:1px solid var(--border)">
+                    <button type="submit" class="btn-fc btn-fc-primary">
+                        <i class="bi bi-check-lg"></i> Saqlash
+                    </button>
+                    <a href="{% url 'member_detail' member.pk %}" class="btn-fc btn-fc-ghost">Bekor qilish</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

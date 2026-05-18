@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip --version)",
+      "Bash(pip install *)",
+      "Bash(python -m django startproject config .)",
+      "Bash(python manage.py startapp members)",
+      "Bash(python manage.py makemigrations)",
+      "Bash(python manage.py migrate)",
+      "Bash(python create_data.py)",
+      "Bash(python manage.py check)",
+      "Bash(python manage.py runserver 8000)",
+      "Bash(python manage.py shell)",
+      "Bash(pip show *)",
+      "Bash(pip freeze *)",
+      "Bash(findstr /i \"psycopg whitenoise dj-database\")"
+    ]
+  }
+}

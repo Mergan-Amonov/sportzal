@@ -1,0 +1,49 @@
+{% extends 'members/base.html' %}
+{% block title %}Abonement turlari{% endblock %}
+{% block page_title %}Abonement turlari{% endblock %}
+
+{% block topbar_actions %}
+<a href="{% url 'plan_create' %}" class="btn-fc btn-fc-primary">
+    <i class="bi bi-plus-lg"></i> Yangi tur
+</a>
+{% endblock %}
+
+{% block content %}
+{% if plans %}
+<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:14px">
+    {% for plan in plans %}
+    <div class="fc-card" style="padding:20px">
+        <div class="satoshi fw-semibold" style="font-size:15px; margin-bottom:8px">{{ plan.name }}</div>
+        <div class="stat-num text-accent" style="font-size:24px; margin-bottom:8px">
+            {{ plan.price|floatformat:0 }}
+            <span class="text-muted" style="font-size:13px; font-family:'Geist',sans-serif; font-weight:400"> so'm</span>
+        </div>
+        <div style="display:inline-flex; align-items:center; gap:5px; background:rgba(107,107,133,.12);
+                    border-radius:4px; padding:3px 8px; margin-bottom:12px">
+            <i class="bi bi-calendar3" style="font-size:11px; color:var(--muted)"></i>
+            <span class="text-xs mono text-muted">{{ plan.duration_days }} kun</span>
+        </div>
+        {% if plan.description %}
+        <div class="text-sm text-muted" style="margin-bottom:14px; line-height:1.5">{{ plan.description }}</div>
+        {% endif %}
+        <div class="border-top-fc" style="padding-top:12px; display:flex; gap:8px">
+            <a href="{% url 'plan_edit' plan.pk %}" class="btn-fc btn-fc-secondary btn-fc-sm" style="flex:1; justify-content:center">
+                <i class="bi bi-pencil"></i> Tahrirlash
+            </a>
+            <a href="{% url 'plan_delete' plan.pk %}" class="btn-fc btn-fc-danger-soft btn-fc-sm">
+                <i class="bi bi-trash"></i>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="fc-card" style="padding:60px 24px; text-align:center">
+    <i class="bi bi-card-list" style="font-size:40px; color:var(--muted); opacity:.4; display:block; margin-bottom:12px"></i>
+    <div class="text-muted text-sm">Abonement turlari yo'q.</div>
+    <a href="{% url 'plan_create' %}" class="btn-fc btn-fc-primary" style="margin-top:16px; display:inline-flex">
+        <i class="bi bi-plus-lg"></i> Birinchi turni qo'shish
+    </a>
+</div>
+{% endif %}
+{% endblock %}

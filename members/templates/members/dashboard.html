@@ -1,0 +1,97 @@
+{% extends 'members/base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<!-- Stat Cards -->
+<div class="grid-4 mb-4" style="margin-bottom:20px">
+    <div class="fc-card" style="padding:16px 20px">
+        <div class="text-xs text-muted mb-2" style="margin-bottom:8px">Jami a'zolar</div>
+        <div class="stat-num text-muted">{{ total_members }}</div>
+    </div>
+    <div class="fc-card" style="padding:16px 20px">
+        <div class="text-xs text-muted mb-2" style="margin-bottom:8px">Faol abonentlar</div>
+        <div class="stat-num text-success">{{ active_members }}</div>
+    </div>
+    <div class="fc-card" style="padding:16px 20px">
+        <div class="text-xs text-muted mb-2" style="margin-bottom:8px">Muddati tugayapti</div>
+        <div class="stat-num text-warning">{{ expiring_soon|length }}</div>
+    </div>
+    <div class="fc-card" style="padding:16px 20px">
+        <div class="text-xs text-muted mb-2" style="margin-bottom:8px">Muddati tugagan</div>
+        <div class="stat-num text-error">{{ expired_count }}</div>
+    </div>
+</div>
+
+<!-- Bottom Row -->
+<div style="display:grid; grid-template-columns:{% if expiring_soon %}300px {% endif %}1fr; gap:16px; align-items:start">
+
+    {% if expiring_soon %}
+    <div class="fc-card">
+        <div class="fc-card-header" style="color:#fbbf24; border-bottom-color: rgba(245,158,11,.2)">
+            <i class="bi bi-clock-history"></i> 3 kun ichida tugaydi
+        </div>
+        <ul style="list-style:none">
+            {% for sub in expiring_soon %}
+            <li style="padding:10px 16px; border-bottom:1px solid rgba(42,42,58,.5); display:flex; justify-content:space-between; align-items:center">
+                <div>
+                    <a href="{% url 'member_detail' sub.member.pk %}" style="color:var(--text); text-decoration:none; font-weight:500; font-size:13px">
+                        {{ sub.member.full_name }}
+                    </a>
+                    <div class="text-xs text-muted mt-1">{{ sub.plan.name }}</div>
+                </div>
+                <span class="badge-fc badge-warning">{{ sub.days_left }} kun</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <!-- Recent Subscriptions Table -->
+    <div class="fc-card">
+        <div class="fc-card-header">
+            <i class="bi bi-clock"></i> Oxirgi abonementlar
+        </div>
+        <table class="fc-table">
+            <thead>
+                <tr>
+                    <th>A'zo</th>
+                    <th>Tur</th>
+                    <th>Tugash sanasi</th>
+                    <th>Holat</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sub in recent_subscriptions %}
+                <tr>
+                    <td>
+                        <a href="{% url 'member_detail' sub.member.pk %}" class="td-name" style="text-decoration:none">
+                            {{ sub.member.full_name }}
+                        </a>
+                    </td>
+                    <td class="td-muted">{{ sub.plan.name }}</td>
+                    <td class="td-mono">{{ sub.end_date }}</td>
+                    <td>
+                        {% if sub.is_expired %}
+                            <span class="badge-fc badge-danger">Tugagan</span>
+                        {% elif sub.days_left <= 3 %}
+                            <span class="badge-fc badge-warning">{{ sub.days_left }} kun</span>
+                        {% else %}
+                            <span class="badge-fc badge-success">{{ sub.days_left }} kun</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" style="text-align:center; color:var(--muted); padding:28px 16px; font-size:13px">
+                        Ma'lumot yo'q
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
