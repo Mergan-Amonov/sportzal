@@ -292,7 +292,10 @@
             <input type="hidden" name="next" value="/">
             <label class="form-label">Login</label>
             <input type="text" name="login" class="form-input" placeholder="Username yoki email" autocomplete="username" autofocus>
-            <label class="form-label">Parol</label>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <label class="form-label" style="margin-bottom:0">Parol</label>
+                <a href="{% url 'account_reset_password' %}" style="font-size:11px; color:var(--muted); text-decoration:none;" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">Parolni unutdim?</a>
+            </div>
             <input type="password" name="password" class="form-input" placeholder="••••••••" autocomplete="current-password">
             <button type="submit" class="btn-submit">Kirish</button>
         </form>
