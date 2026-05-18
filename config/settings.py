@@ -8,7 +8,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure--1l4+onw_!8@6_6c@l45r
 
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'sportzal-dbom.onrender.com,localhost,127.0.0.1').split(',')
 
 # Production security settings (active when DEBUG=False)
 if not DEBUG:
