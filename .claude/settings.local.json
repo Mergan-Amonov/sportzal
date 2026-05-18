@@ -13,7 +13,9 @@
       "Bash(python manage.py shell)",
       "Bash(pip show *)",
       "Bash(pip freeze *)",
-      "Bash(findstr /i \"psycopg whitenoise dj-database\")"
+      "Bash(findstr /i \"psycopg whitenoise dj-database\")",
+      "PowerShell(python -c \"from django.core.management.utils import get_random_secret_key; print\\(get_random_secret_key\\(\\)\\)\")",
+      "PowerShell(New-Item *)"
     ]
   }
 }
